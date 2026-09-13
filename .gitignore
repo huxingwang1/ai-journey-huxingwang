@@ -1,0 +1,15 @@
+# 密钥和敏感信息
+*.txt
+API-key*
+.env
+
+# 对话历史（会越来越长）
+chat_history.json
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 系统文件
+.DS_Store
+Thumbs.db
