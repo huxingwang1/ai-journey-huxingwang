@@ -41,7 +41,7 @@ messages = [
     {"role": "system", "content": "你是一个专业的AI助手，回答简洁明了。"}
 ]
 
-print("输入 quit 退出")
+print("输入 quit 退出.")
 while True:
     user_input = input("你：")
     if user_input == "quit":
