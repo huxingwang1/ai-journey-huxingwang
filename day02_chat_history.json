@@ -1,0 +1,22 @@
+[
+  {
+    "role": "system",
+    "content": "你是一个专业的AI助手，回答简洁明了。"
+  },
+  {
+    "role": "user",
+    "content": "我叫李四"
+  },
+  {
+    "role": "assistant",
+    "content": "你好，李四！有什么我可以帮你的吗？"
+  },
+  {
+    "role": "user",
+    "content": "我叫什么名字"
+  },
+  {
+    "role": "assistant",
+    "content": "你叫李四。"
+  }
+]

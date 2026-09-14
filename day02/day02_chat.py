@@ -51,4 +51,4 @@ while True:
     messages.append({"role": "assistant", "content": reply})
     print(f"[当前历史消息数：{len(messages)}]")
     print("AI：", reply)
-    save_history(messages, "chat_history.json")
+    save_history(messages, "day02_chat_history.json")
