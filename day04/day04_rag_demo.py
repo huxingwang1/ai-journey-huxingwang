@@ -2,7 +2,6 @@ import sys
 import io
 import os
 import chromadb
-from chromadb.utils import embedding_functions
 from dotenv import load_dotenv
 from openai import OpenAI
 
@@ -11,35 +10,15 @@ sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
 
 load_dotenv()
 
-# 大模型客户端（DeepSeek）
+# 大模型客户端
 llm_client = OpenAI(
     api_key=os.getenv("DEEPSEEK_API_KEY"),
     base_url="https://api.deepseek.com"
 )
 
-# Embedding 客户端（智谱）
-embed_client = OpenAI(
-    api_key=os.getenv("ZHIPU_API_KEY"),
-    base_url="https://open.bigmodel.cn/api/paas/v4/"
-)
-
-def get_embedding(text):
-    response = embed_client.embeddings.create(
-        model="embedding-3",
-        input=text
-    )
-    return response.data[0].embedding
-
-# 用智谱 Embedding 替换默认模型
-class ZhipuEmbedding(embedding_functions.EmbeddingFunction):
-    def __call__(self, texts):
-        return [get_embedding(t) for t in texts]
-
+# 向量数据库
 chroma_client = chromadb.Client()
-collection = chroma_client.create_collection(
-    name="company_docs",
-    embedding_function=ZhipuEmbedding()
-)
+collection = chroma_client.create_collection(name="company_docs")
 
 documents = [
     "公司年假政策：入职满1年享受5天年假，满3年10天，满5年15天。",
@@ -55,6 +34,7 @@ collection.add(
 )
 
 def rag_query(question):
+    # 第一步：检索
     results = collection.query(
         query_texts=[question],
         n_results=2
@@ -62,6 +42,7 @@ def rag_query(question):
     retrieved_docs = results["documents"][0]
     context = "\n".join(retrieved_docs)
     
+    # 第二步：让 AI 基于检索结果回答
     messages = [
         {"role": "system", "content": "你是一个公司政策助手。只能根据提供的资料回答问题，不要编造。如果资料里没有，就说'资料中没有相关信息'。"},
         {"role": "user", "content": f"参考资料：\n{context}\n\n问题：{question}"}
@@ -74,6 +55,7 @@ def rag_query(question):
     
     return response.choices[0].message.content
 
+# 测试
 questions = [
     "年假有多少天？",
     "怎么报销？",
