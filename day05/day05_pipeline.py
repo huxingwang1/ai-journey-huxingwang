@@ -114,7 +114,7 @@ def rag_answer(question, collection, n_results=3):
 
 # 测试完整 RAG
 print("\n" + "=" * 40)
-print("完整 RAG 问答：")
+print("完整 RAG 问答.：")
 for q in questions:
     print(f"\n问题：{q}")
     print(f"回答：{rag_answer(q, collection)}")

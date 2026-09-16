@@ -12,7 +12,7 @@ def parse_pdf(file_path):
     for i, page in enumerate(reader.pages):
         text = page.extract_text()
         pages.append(text)
-        print(f"第{i+1}页，提取{len(text)}个字符")
+        print(f"第{i+1}页，提取{len(text)}个字符.")
     return pages
 
 result=parse_pdf("Artificial Intelligence.pdf")

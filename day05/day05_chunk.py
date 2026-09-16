@@ -1,5 +1,5 @@
 def split_text(text, chunk_size=100, overlap=20):
-    """把长文本切成小段"""
+    """把长文本切成小段."""
     chunks = []
     start = 0
     while start < len(text):
