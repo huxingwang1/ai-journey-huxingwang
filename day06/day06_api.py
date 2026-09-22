@@ -132,18 +132,4 @@ def query(request: QueryRequest):
         answer=response.choices[0].message.content,
         sources=top_docs
     )
-    # 生成
-    messages = [
-        {"role": "system", "content": "你是一个知识库助手。只能根据提供的资料回答问题，不要编造。如果资料里没有，就说'资料中没有相关信息'。"},
-        {"role": "user", "content": f"参考资料：\n{context}\n\n问题：{request.question}"}
-    ]
-    
-    response = llm_client.chat.completions.create(
-        model="deepseek-chat",
-        messages=messages
-    )
-    
-    return QueryResponse(
-        answer=response.choices[0].message.content,
-        sources=retrieved_docs
-    )
+  
