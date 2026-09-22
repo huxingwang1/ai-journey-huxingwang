@@ -110,7 +110,7 @@ def query(request: QueryRequest):
             "query": request.question,
             "documents": candidates
         }
-    )
+    ) 
     reranked = rerank_response.json()["results"]
     
     # 3. 取前 3 条最相关的
@@ -119,7 +119,7 @@ def query(request: QueryRequest):
     
     # 4. 生成回答
     messages = [
-        {"role": "system", "content": "你是一个知识库助手。只能根据提供的资料回答问题，不要编造。"},
+        {"role": "system", "content": "你是一个知识库助手，只能根据提供的资料回答问题，不要编造。"},
         {"role": "user", "content": f"参考资料：\n{context}\n\n问题：{request.question}"}
     ]
     
