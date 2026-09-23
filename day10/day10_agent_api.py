@@ -2,6 +2,8 @@ import sys
 import io
 import os
 from dotenv import load_dotenv
+from fastapi import FastAPI
+from pydantic import BaseModel
 from typing import TypedDict, Annotated
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
@@ -16,6 +18,8 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
 
 load_dotenv()
+
+app = FastAPI(title="Agent API")
 
 # ========== 1. 初始化 LLM ==========
 llm = ChatOpenAI(
@@ -54,7 +58,7 @@ print(f"切片完成：{len(chunks)} 段")
 vectorstore = Chroma.from_texts(
     texts=chunks,
     embedding=embeddings,
-    collection_name="day10_rag"
+    collection_name="day10_api_rag"
 )
 retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
 print("知识库构建完成")
@@ -128,17 +132,23 @@ workflow.set_entry_point("think")
 workflow.add_conditional_edges("think", should_continue, {"tools": "tools", END: END})
 workflow.add_edge("tools", "think")
 
-app = workflow.compile()
+agent_app = workflow.compile()
 
-# ========== 7. 测试 ==========
-if __name__ == "__main__":
-    questions = [
-        "北京天气怎么样？",
-        "计算 123 * 456",
-        "教学机智在感知层面有什么新特征？"
-    ]
-    for q in questions:
-        print(f"\n{'='*40}")
-        print(f"问题：{q}")
-        result = app.invoke({"messages": [HumanMessage(content=q)]})
-        print(f"最终回答：{result['messages'][-1].content}")
+# ========== 7. API 接口 ==========
+class ChatRequest(BaseModel):
+    message: str
+
+class ChatResponse(BaseModel):
+    reply: str
+
+@app.get("/")
+def root():
+    return {"message": "Agent API 已启动"}
+
+@app.post("/chat", response_model=ChatResponse)
+def chat(request: ChatRequest):
+    result = agent_app.invoke({
+        "messages": [HumanMessage(content=request.message)]
+    })
+    reply = result["messages"][-1].content
+    return ChatResponse(reply=reply)
