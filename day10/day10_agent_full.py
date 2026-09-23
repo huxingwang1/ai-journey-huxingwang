@@ -81,7 +81,7 @@ def calculator(expression: str) -> str:
 
 @tool
 def search_knowledge(question: str) -> str:
-    """从知识库中搜索信息。用于回答关于人工智能、教学机智的问题。"""
+    """从知识库中搜索信息。用于回答关于人工智能，教学机智的问题。"""
     docs = retriever.invoke(question)
     return "\n\n".join(doc.page_content for doc in docs)
 

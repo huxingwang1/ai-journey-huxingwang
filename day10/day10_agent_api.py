@@ -29,7 +29,7 @@ llm = ChatOpenAI(
 )
 
 # ========== 2. 构建 RAG 知识库 ==========
-print("正在构建知识库...")
+print("正在构建知识库..")
 
 embeddings = OpenAIEmbeddings(
     model="embedding-3",
