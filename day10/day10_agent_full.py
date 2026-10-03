@@ -40,7 +40,7 @@ def parse_pdf(file_path):
         text += page.extract_text() or ""
     return text
 
-pdf_path = r"C:\Users\Administrator\Desktop\ai-journey\Artificial Intelligence.pdf"
+pdf_path = "Artificial Intelligence.pdf"
 full_text = parse_pdf(pdf_path)
 
 text_splitter = RecursiveCharacterTextSplitter(
