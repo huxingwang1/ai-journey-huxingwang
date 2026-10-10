@@ -55,7 +55,7 @@ memory = MemorySaver()
 
 app = workflow.compile(
     checkpointer=memory,
-    interrupt_before=["review"]
+    interrupt_before=["review"] 
 )
 
 config = {"configurable": {"thread_id": "1"}}
