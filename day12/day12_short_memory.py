@@ -44,7 +44,7 @@ app = workflow.compile(checkpointer=memory)
 config = {"configurable": {"thread_id": "user1"}}
 
 print("第1轮：")
-result = app.invoke({"messages": [HumanMessage(content="我叫张三")]}, config=config)
+result = app.invoke({"messages": [HumanMessage(content="我叫张三.")]}, config=config)
 print(result["messages"][-1].content)
 
 print("\n第2轮：")

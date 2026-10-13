@@ -27,7 +27,7 @@ class ChatResponse(BaseModel):
 
 @app.get("/")
 def root():
-    return {"message": "Memory Agent API 已启动"}
+    return {"message": "Memory Agent API 已启动."}
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):

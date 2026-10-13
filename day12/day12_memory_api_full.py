@@ -59,7 +59,7 @@ def save_memory_node(state: State):
         question = messages[-2].content
         answer = messages[-1].content
         
-        prompt = f"""从下面的对话中提取值得长期记住的信息（如姓名、喜好、地址等）。
+        prompt = f"""从下面的对话中提取值得长期记住的信息,（如姓名、喜好、地址等）。
 如果没有，回答"无"。
 用户：{question}
 AI：{answer}

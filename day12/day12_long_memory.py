@@ -32,7 +32,7 @@ memory_store = Chroma(
 def save_memory(text):
     """保存记忆"""
     memory_store.add_texts([text])
-    print(f"[存储记忆] {text}")
+    print(f"[存储记忆.] {text}")
 
 def retrieve_memory(query, k=3):
     """检索记忆"""

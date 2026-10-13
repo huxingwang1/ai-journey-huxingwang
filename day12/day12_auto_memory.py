@@ -32,7 +32,7 @@ memory_store = Chroma(
 
 # ========== 2. 记忆操作函数 ==========
 def save_memory(text):
-    """保存记忆到向量库"""
+    """保存记忆到向量库."""
     memory_store.add_texts([text])
     print(f"[存储记忆] {text}")
 
