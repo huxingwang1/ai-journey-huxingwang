@@ -58,14 +58,14 @@ def keyword_search(query, k=3):
 
 # ========== 4. 混合检索 ==========
 def hybrid_search(query, k=3):
-    """向量 + 关键词，合并去重"""
+    """向量 + 关键词，合并去重。"""
     vector_results = vectorstore.similarity_search(query, k=k)
     vector_docs = [doc.page_content for doc in vector_results]
     
     keyword_docs = keyword_search(query, k=k)
     
     combined = list(dict.fromkeys(vector_docs + keyword_docs))
-    return combined[:k]
+    return combined[:k]                            
 
 # ========== 5. 测试 ==========
 query = "教学机智在感知层面有什么新特征？"
