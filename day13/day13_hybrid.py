@@ -8,9 +8,6 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pypdf import PdfReader
 from rank_bm25 import BM25Okapi
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
-
 load_dotenv()
 
 # ========== 1. 准备数据 ==========
