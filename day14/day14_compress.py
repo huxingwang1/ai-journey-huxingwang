@@ -9,10 +9,9 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+from day14_stream import vectorstore
 
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
 
 load_dotenv()
 
@@ -39,24 +38,23 @@ compress_prompt = ChatPromptTemplate.from_messages([
 
 compress_chain = compress_prompt | llm | StrOutputParser()
 
-def compress_docs(question, docs):
-    """遍历文档，逐条压缩，过滤无关内容。"""
+def compress_docs_batch(question, docs):
+    """用 batch 并发压缩"""
+    inputs = [{"question": question, "document": doc.page_content} for doc in docs]
+    
+    # 核心：用 batch() 代替循环 invoke()
+    results = compress_chain.batch(inputs)
+    
     compressed_docs = []
-    for doc in docs:
-        result = compress_chain.invoke({
-            "question": question,
-            "document": doc.page_content
-        })
-        # 如果提取出了有效内容，就保留
+    for result in results:
         if result.strip() and result.strip() != "无":
             compressed_docs.append(result)
     return compressed_docs
-
 # 测试
 query = "教学机智在感知层面有什么新特征？"
 raw_docs = retriever.invoke(query) # 这里返回的是 Document 对象列表
 print(f"压缩前条数：{len(raw_docs)}")
 
-compressed = compress_docs(query, raw_docs)
+compressed = compress_docs_batch(query, raw_docs)
 print(f"压缩后条数：{len(compressed)}")
 print(f"压缩后内容：\n{compressed[0]}")

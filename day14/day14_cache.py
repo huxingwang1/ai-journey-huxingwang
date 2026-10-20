@@ -8,9 +8,8 @@ from langchain_chroma import Chroma
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
+from day14_stream import vectorstore
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
 
 load_dotenv()
 
@@ -54,7 +53,7 @@ def ask_with_cache(question):
     
     # 1. 先去找缓存
     cache_results = cache_store.similarity_search_with_score(question, k=1)
-    
+    score = 1.0 
     if cache_results:
         doc, score = cache_results[0]
         # 智谱 embedding 距离一般很小，这里放宽阈值到 0.3

@@ -15,4 +15,4 @@ Day 14 笔记
 
 ## 异步并发 (Async)
 - `await chain.ainvoke(...)`。
-- `asyncio.gather` 处理并发请求
+- `asyncio.gather` 处理并发请求。
