@@ -51,7 +51,7 @@ vectorstore.add_texts(chunks)
 retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
 
 prompt = ChatPromptTemplate.from_messages([
-    ("system", "你是一个知识库助手，只能根据提供的资料回答问题，不要编造。"),
+    ("system", "你是一个知识库助手，只能根据提供的资料回答问题，不要编造"),
     ("user", "参考资料：\n{context}\n\n问题：{question}")
 ])
 
