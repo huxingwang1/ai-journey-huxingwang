@@ -15,7 +15,7 @@ llm = ChatOpenAI(
     base_url="https://api.deepseek.com"
 )
 
-# Embedding 和向量库。
+# Embedding 和向量库
 embeddings = OpenAIEmbeddings(
     model="embedding-3",
     api_key=os.getenv("ZHIPU_API_KEY"),
