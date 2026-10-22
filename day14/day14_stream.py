@@ -8,7 +8,6 @@ from langchain_chroma import Chroma
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
-# 新增导入
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pypdf import PdfReader
 
@@ -29,10 +28,9 @@ embeddings = OpenAIEmbeddings(
     base_url="https://open.bigmodel.cn/api/paas/v4/"
 )
 
-# ========== 2. 如果库是空的，就现场读 PDF 装进去 ==========
+
 vectorstore = Chroma(collection_name="hybrid_test", embedding_function=embeddings)
 
-# 检查库里有没有数据
 
 pdf_path = r"Artificial Intelligence.pdf"
 reader = PdfReader(pdf_path)
