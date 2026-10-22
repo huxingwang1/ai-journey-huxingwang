@@ -9,6 +9,7 @@ class ChatRequest(BaseModel):
     message: str
     session_id: str
 
+
 @app.post("/chat")
 def chat(request: ChatRequest):
     config = {"configurable": {"thread_id": request.session_id}}

@@ -19,6 +19,7 @@ embeddings = OpenAIEmbeddings(
     base_url="https://open.bigmodel.cn/api/paas/v4/"
 )
 
+
 memory_store = Chroma(collection_name="agent_long_memory", embedding_function=embeddings)
 knowledge_store = Chroma(collection_name="hybrid_test", embedding_function=embeddings)
 knowledge_retriever = knowledge_store.as_retriever(search_kwargs={"k": 3})

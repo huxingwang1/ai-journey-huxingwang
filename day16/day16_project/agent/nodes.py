@@ -26,6 +26,7 @@ def save_memory_node(state: State):
     # ...(复制你昨天的存储逻辑)...
     pass
 
+
 def should_continue(state: State):
     last_message = state["messages"][-1]
     if hasattr(last_message, "tool_calls") and last_message.tool_calls:
