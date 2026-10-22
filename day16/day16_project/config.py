@@ -27,13 +27,13 @@ memory_store = Chroma(collection_name="agent_long_memory", embedding_function=em
 knowledge_store = Chroma(collection_name="hybrid_test", embedding_function=embeddings)
 knowledge_retriever = knowledge_store.as_retriever(search_kwargs={"k": 3})
 
-pdf_path = os.path.join(os.path.dirname(__file__), "..", "..", "Artificial Intelligence.pdf")
+pdf_path = os.path.join("Artificial Intelligence.pdf")
     
-if os.path.exists(pdf_path):
-    reader = PdfReader(pdf_path)
-    text = ""
-    for page in reader.pages:
-         text += page.extract_text() or ""
+
+reader = PdfReader(pdf_path)
+text = ""
+for page in reader.pages:
+    text += page.extract_text() or ""
             
     splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
     chunks = splitter.split_text(text)
