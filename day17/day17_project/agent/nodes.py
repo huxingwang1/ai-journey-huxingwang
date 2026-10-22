@@ -40,8 +40,14 @@ supervisor_prompt = ChatPromptTemplate.from_messages([
 # ========== 2. 定义各个专家节点 ==========
 def weather_expert(state: State):
     print("  [天气专家] 处理中...")
-    response = llm.invoke(f"你是天气专家，请回答：{state['question']}")
-    return {"answer": response.content}
+    # 简单提取城市（这里为了演示，直接假设问题里包含城市）
+    city = "北京"
+    if "上海" in state["question"]: city = "上海"
+    if "杭州" in state["question"]: city = "杭州"
+    
+    # 调用真实的工具
+    result = get_weather.invoke({"city": city})
+    return {"answer": result}
 
 def rag_expert(state: State):
     print("  [知识专家] 处理中...")

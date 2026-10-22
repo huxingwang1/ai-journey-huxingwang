@@ -3,17 +3,19 @@ version: '3.8'
 services:
   # 服务1：AI Agent API
   ai-api:
-    build: .                    # 自动找当前目录的 Dockerfile 构建
+    build: .
     ports:
-      - "8000:8000"             # 映射端口
+      - "8000:8000"
     env_file:
-      - .env                    # 注入密钥
+      - .env
     environment:
-      - REDIS_HOST=redis        # 告诉代码，Redis的地址是下面那个服务
+      - REDIS_HOST=redis
+    dns:
+      - 114.114.114.114
+      - 8.8.8.8
     depends_on:
-      - redis                   # 必须先启动 redis 才能启动 api
-
-  # 服务2：Redis
+      - redis
+# 服务2：Redis
   redis:
     image: redis:7-alpine       # 官方轻量级 Redis 镜像
     ports:
