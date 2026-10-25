@@ -20,23 +20,31 @@ class ChatRequest(BaseModel):
 
 @app.post("/chat")
 def chat(request: ChatRequest):
-    print("\n【1】收到请求，准备过护栏...", flush=True) # 加上 flush=True
-    
+    print(f"\n🔥🔥🔥 收到前端请求：{request.message} 🔥🔥🔥\n") # <--- 加这句
+    # 【第一道防线：输入护栏】
     if not filter_input(request.message):
-        return {"reply": "拦截"}
-        
-    print("【2】过了护栏，准备进入图...", flush=True)
-    
-    try:
-        # 注意：这里的线程可能卡住
-        print("【3】即将执行 invoke...", flush=True)
-        result = agent_app.invoke({"question": request.message})
-        print("【4】图执行完毕，拿到结果了！", flush=True)
-        
-        reply = result["answer"]
-        return {"reply": reply}
-    except Exception as e:
-        print(f"【报错】{e}", flush=True)
-        return {"reply": "出错了"}
+        print(f"\n🚨 [拦截] 触发敏感词：{request.message}\n")
+        return {"reply": "您的输入包含违规或敏感指令，已被系统拦截。"}
 
-   
+    # 防死循环配置
+    config = {
+        "configurable": {"thread_id": request.session_id},
+        "recursion_limit": 10
+    }
+
+    try:
+        # 运行 Agent
+        result = agent_app.invoke({"question": request.message}, config=config)
+        reply = result["answer"]
+        
+        # 【第二道防线：输出护栏】
+        safe_reply = filter_output(reply)
+        return {"reply": safe_reply}
+
+    # 【异常兜底】
+    except GraphRecursionError:
+        print("\n🚨 [报错] Agent 触发死循环\n")
+        return {"reply": "抱歉，Agent 思考次数过多，已强制停止。"}
+    except Exception as e:
+        print(f"\n🚨 [报错] 系统异常：{e}\n")
+        return {"reply": f"服务器开小差了：{str(e)}"}
