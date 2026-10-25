@@ -26,7 +26,7 @@ if prompt := st.chat_input("请输入您的问题..."):
     with st.chat_message("assistant"):
         with st.spinner("Agent 思考中..."):
             response = requests.post(
-                "http://127.0.0.1:8001/chat",
+                "http://127.0.0.1:8000/chat",
                 json={"message": prompt, "session_id": "streamlit_user"}
             )
             # 把前端拦截下来，看看后端到底返回了什么
