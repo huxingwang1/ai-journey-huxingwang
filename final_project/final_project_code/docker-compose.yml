@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # 服务1：AI Agent API
+  # 1. 后端服务
   ai-api:
     build: .
     ports:
@@ -10,13 +10,23 @@ services:
       - .env
     environment:
       - REDIS_HOST=redis
-    dns:
-      - 114.114.114.114
-      - 8.8.8.8
     depends_on:
       - redis
-# 服务2：Redis
+
+  # 2. Redis 数据库
   redis:
-    image: redis:7-alpine       # 官方轻量级 Redis 镜像
+    image: redis:7-alpine
     ports:
       - "6379:6379"
+
+  # 3. 前端网页
+  frontend:
+    build: 
+      context: .
+      dockerfile: Dockerfile_frontend  # 如果你放在同一个目录，就用这个名字区分
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://ai-api:8000/chat # 注意这里，Docker 内部通信用服务名
+    depends_on:
+      - ai-api

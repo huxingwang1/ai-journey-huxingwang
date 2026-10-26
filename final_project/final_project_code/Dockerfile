@@ -6,8 +6,7 @@ WORKDIR /app
 
 # 3. 先复制依赖清单并安装（利用 Docker 缓存加速后续构建）
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
-
+RUN pip install --no-cache-dir -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 # 4. 复制当前目录下的所有代码到容器的 /app 里
 COPY . .
 
